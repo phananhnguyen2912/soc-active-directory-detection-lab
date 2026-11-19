@@ -110,7 +110,7 @@ Searching for the correct target account located the relevant event.
 
 ### Client-Side Authentication Failure
 
-
+![Authentication failure on CLIENT01](../evidence/failed-logon-client.png)
 
 ### Event 4625 in Splunk
 
