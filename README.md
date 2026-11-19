@@ -36,7 +36,7 @@ on the host machine for searching and analysis.
 | Active Directory deployment and workstation domain join | Completed |
 | Windows Security log forwarding to Splunk | Verified |
 | Single failed authentication attempt | Verified |
-| Password spraying simulation and detection validation | In progress |
+| Password spraying simulation and detection validation | Verified  |
 | Brute-force simulation and detection | Planned |
 | Successful authentication following repeated failures | Planned |
 
