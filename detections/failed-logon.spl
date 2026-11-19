@@ -1,0 +1,10 @@
+index=wineventlog host=DC01
+| rex field=_raw "<EventID[^>]*>(?<event_id>\d+)</EventID>"
+| where event_id="4625"
+| rex field=_raw "<Data Name=['\"]TargetUserName['\"]>(?<target_user>[^<]*)</Data>"
+| rex field=_raw "<Data Name=['\"]IpAddress['\"]>(?<src_ip>[^<]*)</Data>"
+| rex field=_raw "<Data Name=['\"]LogonType['\"]>(?<logon_type>[^<]*)</Data>"
+| rex field=_raw "<Data Name=['\"]Status['\"]>(?<status>[^<]*)</Data>"
+| rex field=_raw "<Data Name=['\"]SubStatus['\"]>(?<sub_status>[^<]*)</Data>"
+| table _time host target_user src_ip logon_type status sub_status
+| sort - _time
