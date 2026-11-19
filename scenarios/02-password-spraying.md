@@ -72,10 +72,36 @@ This query aggregates over the entire selected range.
 | Test date and time zone | 2026-11-18 - UTC + 7  |
 | Search time range | 2026-11-18 13:43:59.475 - 2026-11-18 13:47:59.765   |
 | Source IP | 192.168.56.20 |
-| Failed events | 0 |
+| Failed events | 10 |
 | Distinct target accounts | 10 |
 | Detection threshold | 5 distinct accounts |
 | Detection result | Matched the simulated activity |
+
+  ### Detailed Authentication Failure Timeline
+
+
+But in the 
+![Detailed authentication failure timeline](../evidence/password-spraying-event-details.png), the table shows 12 failed authentication events on November 18, 2026:
+
+| Activity | Time shown in Splunk | Target accounts | Events |
+|---|---|---|---|
+| Earlier authentication test | 13:19:47 | labuser02 | 1 |
+| Earlier authentication test | 13:30:31 | labuser03 | 1 |
+| Password spraying simulation | 13:43:59–13:47:59 | labuser01–labuser10 | 10 |
+
+All displayed events have source IP `192.168.56.20` and
+SubStatus `0xC000006A`, indicating incorrect-password failures.
+
+The total of 12 includes two earlier test events.
+The spraying sequence accounts for 10 events targeting
+10 distinct accounts.
+
+These timestamps represent the observed events, rather than
+the exact script start and end times.
+
+Because the earlier tests are included in the search window,
+the aggregated detection reports `first_seen` as approximately
+13:19 and `failed_events` as 12.
 
 ## Interpretation
 
@@ -96,6 +122,7 @@ does not expose the attempted password.
 - Thresholds require tuning for the monitored environment.
 - Manual detection validation does not establish that a scheduled
   alert has been configured.
+
 
 ## Evidence
 
