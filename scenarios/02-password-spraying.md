@@ -81,7 +81,7 @@ This query aggregates over the entire selected range.
 
 
 But in the 
-![Detailed authentication failure timeline](../evidence/password-spraying-event-details.png), the table shows 12 failed authentication events on November 18, 2026:
+[Detailed authentication failure timeline](../evidence/password-spraying-event-details.png), the table shows 12 failed authentication events on November 18, 2026:
 
 | Activity | Time shown in Splunk | Target accounts | Events |
 |---|---|---|---|
