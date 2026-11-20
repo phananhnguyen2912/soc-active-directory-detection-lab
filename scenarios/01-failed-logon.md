@@ -5,7 +5,7 @@
 Generate a failed network authentication attempt and verify the
 event collection path from DC01 to Splunk.
 
-## Prerequisites
+## Lab Context
 
 - CLIENT01 is joined to the soclab.test domain.
 - The labuser02 account is enabled and not locked out.
@@ -14,7 +14,7 @@ event collection path from DC01 to Splunk.
 - Splunk Universal Forwarder collects the Security log from DC01.
 - Splunk Enterprise is receiving the forwarded events.
 
-## Procedure
+## Investigation Method
 
 ### 1. Check Existing SMB Connections
 
@@ -24,8 +24,7 @@ Run the following command on CLIENT01:
 net use
 ```
 
-Disconnect existing connections to DC01, if necessary, before
-attempting authentication with different credentials.
+Existing SMB connections to DC01 were checked before the lab test.
 
 ### 2. Record the Start Time
 
@@ -58,7 +57,11 @@ This client message alone does not distinguish an incorrect
 username from an incorrect password. The server-side event
 provides additional detail.
 
-## Observed Evidence
+### Splunk query
+
+Run [failed-logon.spl](../detections/failed-logon.spl) over the recorded test period. Correlate the target account, available source fields, and timestamp with the client activity.
+
+## Results
 
 A corresponding event was found in the Security log on DC01
 and in Splunk.
@@ -73,7 +76,7 @@ and in Splunk.
 | Status | 0xC000006D |
 | SubStatus | 0xC000006A |
 
-## Analysis
+## Interpretation and Limitations
 
 - Event 4625 records a failed logon attempt.
 - Logon Type 3 identifies a network logon.
@@ -82,23 +85,9 @@ and in Splunk.
 - The target account is the account supplied to the connection,
   rather than necessarily the user signed in to the workstation.
 
-## Investigation Query
+The matching event in Splunk validates forwarding from DC01. A single failure can have routine causes.
 
-See [failed-logon.spl](../detections/failed-logon.spl).
-
-Select a search time range that includes the recorded test time.
-Correlate the account, source information, and timestamp before
-associating an event with the test.
-
-## Result
-
-The authentication attempt was rejected, recorded on DC01,
-and successfully forwarded to Splunk.
-
-This validates the collection path for this event. It does not
-establish that a single failed attempt represents an attack.
-
-## Troubleshooting Lesson
+### Troubleshooting lesson
 
 An initial search used the workstation's signed-in account,
 labuser03, instead of the account explicitly supplied to
@@ -106,7 +95,7 @@ labuser03, instead of the account explicitly supplied to
 
 Searching for the correct target account located the relevant event.
 
-## Screenshots
+## Evidence
 
 ### Client-Side Authentication Failure
 

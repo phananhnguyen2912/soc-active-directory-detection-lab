@@ -6,7 +6,7 @@ Simulate password spraying against test accounts and detect
 multiple accounts experiencing failed authentication from
 the same source IP address.
 
-## Environment
+## Lab Context
 
 - Source: CLIENT01 — 192.168.56.20
 - Destination: DC01 — 192.168.56.10
@@ -15,7 +15,7 @@ the same source IP address.
 - Data source: Windows Security log on DC01
 - Analysis platform: Splunk Enterprise
 
-## Prerequisites
+### Prerequisites
 
 - Test accounts are enabled and not locked out.
 - Applicable account lockout policies have been reviewed.
@@ -23,18 +23,20 @@ the same source IP address.
 - Security events are forwarded from DC01 to Splunk.
 - Existing SMB connections to DC01 have been checked.
 
-## Simulation
+## Investigation Method
+
+### Lab activity
 
 The simulation attempted authentication to the IPC$ share on DC01
 using the same intentionally incorrect password across ten lab accounts.
 
-The ps script made one connection attempt per account, with a
+The PowerShell script made one connection attempt per account, with a
 three-second delay between attempts. It stopped if a connection
 unexpectedly succeeded.
 
 Script: [simulate-password-spraying.ps1](../scripts/simulate-password-spraying.ps1)
 
-## Observed Events
+### Fields reviewed
 
 Windows Security event 4625 was used to investigate the failures.
 
@@ -49,7 +51,7 @@ Relevant fields:
 | SubStatus | Additional failure information |
 
 
-## Detection Logic
+### SPL detection logic
 
 Within the selected search time range:
 
@@ -65,7 +67,7 @@ Query: [password-spraying.spl](../detections/password-spraying.spl)
 The time range is part of the detection configuration.
 This query aggregates over the entire selected range.
 
-## Validation Results
+## Results
 
 | Item | Observed Result |
 |---|---|
@@ -101,7 +103,7 @@ Because the earlier tests are included in the search window,
 the aggregated detection reports `first_seen` as approximately
 13:19 and `failed_events` as 12.
 
-## Interpretation
+## Interpretation and Limitations
 
 The query identified multiple accounts with incorrect-password
 failures from the same source during the test window.
@@ -110,7 +112,7 @@ This pattern is consistent with password spraying. The simulation
 script establishes that the same password was used; event 4625
 does not expose the attempted password.
 
-## Limitations
+### Limitations
 
 - Shared source addresses may combine activity from multiple users.
 - Legitimate authentication problems may produce similar patterns.

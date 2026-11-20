@@ -18,7 +18,7 @@ The `soclab.test` domain runs in Oracle VirtualBox on a host-only network. Splun
 |---|---|---|
 | Single failed network logon | Event `4625` located in Splunk | [Investigation](scenarios/01-failed-logon.md) · [SPL](detections/failed-logon.spl) |
 | Password spraying | 10 failed logons across 10 accounts from one source IP | [Investigation](scenarios/02-password-spraying.md) · [SPL](detections/password-spraying.spl) |
-| Repeated logon failures and account lockout | Account lockout and successful post-unlock network logon verified in Splunk | [Investigation](scenarios/03-brute-force-account-lockout.md) |
+| Repeated logon failures and account lockout | Account lockout and successful post-unlock network logon verified in Splunk | [Investigation](scenarios/03-brute-force-account-lockout.md) · [SPL](detections/account-lockout-timeline.spl) |
 
 ## Findings
 

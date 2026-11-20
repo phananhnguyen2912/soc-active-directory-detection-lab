@@ -1,0 +1,16 @@
+index=wineventlog host=DC01
+| rex field=_raw "<EventID[^>]*>(?<event_id>[0-9]+)</EventID>"
+| where event_id IN ("4624", "4625", "4740", "4767")
+| rex field=_raw "<Data Name=['\"]TargetUserName['\"]>(?<target_user>[^<]*)</Data>"
+| where lower(target_user)="labuser10"
+| rex field=_raw "<Data Name=['\"]IpAddress['\"]>(?<src_ip>[^<]*)</Data>"
+| rex field=_raw "<Data Name=['\"]WorkstationName['\"]>(?<workstation>[^<]*)</Data>"
+| rex field=_raw "<Data Name=['\"]TargetDomainName['\"]>(?<target_domain_field>[^<]*)</Data>"
+| rex field=_raw "<Data Name=['\"]LogonType['\"]>(?<logon_type>[^<]*)</Data>"
+| rex field=_raw "<Data Name=['\"]AuthenticationPackageName['\"]>(?<auth_package>[^<]*)</Data>"
+| rex field=_raw "<Data Name=['\"]Status['\"]>(?<status>[^<]*)</Data>"
+| rex field=_raw "<Data Name=['\"]SubStatus['\"]>(?<sub_status>[^<]*)</Data>"
+| eval caller_computer=if(event_id="4740", target_domain_field, null())
+| eval activity=case(event_id="4624", "Successful logon", event_id="4625", "Failed logon", event_id="4740", "Account locked", event_id="4767", "Account unlocked")
+| sort 0 _time
+| table _time host event_id activity target_user src_ip workstation caller_computer logon_type auth_package status sub_status
