@@ -16,10 +16,10 @@ Verify whether Active Directory locked `labuser10` after repeated failed network
 
 ## Investigation Method
 
-Run [account-lockout-timeline.spl](../detections/account-lockout-timeline.spl) in Splunk with an absolute time range covering **09:58 to 10:09 on November 20, 2026 (UTC+7)**. The search reads DC01's Security events for `labuser10` and sorts by event time. Change the target account in the search to investigate another lab user.
+The timeline evidence was collected with [account-lockout-timeline.spl](../detections/account-lockout-timeline.spl). To review the same events in Splunk, run the search with an absolute time range covering **09:58 to 10:09 on November 20, 2026 (UTC+7)**. The search reads DC01's Security events for `labuser10` and sorts by event time. Change the target account in the search to investigate another lab user.
 
-1. Review `4625` with Logon Type `3` and SubStatus `0xC000006A` for incorrect-password network logons. Check the source IP and workstation where present.
-2. Locate `4740` and `4767` for the same account. The search retains records with no source IP so the lockout and unlock remain visible. For the captured `4740`, the raw XML field `TargetDomainName` contains the caller computer `CLIENT01`.
+1. Review `4625` with Logon Type `3` and SubStatus `0xC000006A` for incorrect-password network logons. Check `src_ip` in the results and review the raw event for the workstation name when needed.
+2. Locate `4740` and `4767` for the same account. The search retains records with no source IP so the lockout and unlock remain visible. In the separate raw event evidence for `4740`, the XML field `TargetDomainName` contains the caller computer `CLIENT01`.
 3. Compare `4624` events before the lockout with those after the unlock. Use the account, timestamp, logon type, and source IP to identify the event that corresponds to the successful connection on CLIENT01.
 
 ## Results
@@ -44,7 +44,7 @@ Selected events from the Splunk timeline follow. Times are UTC+7 on November 20,
 
 The account state and `4740` confirm that the lockout policy took effect. Use the client screenshot to verify the locked-account response on the sixth attempt. The number and ordering of event records need not map directly to the client commands.
 
-Earlier `4624` events are also visible in the search. The `4624` at `10:07:52.351` follows the `4767` unlock and matches the account and source IP for the successful post-unlock test. This validates account recovery in the lab. The evidence was reviewed with a manual Splunk search. The linked SPL reproduces the investigation view and has no alert threshold or schedule.
+Earlier `4624` events are also visible in the search. The `4624` at `10:07:52.351` follows the `4767` unlock and matches the account and source IP for the successful post-unlock test. This validates account recovery in the lab. The evidence was reviewed with a manual Splunk search. The linked SPL is the search used to collect the timeline evidence. It has no alert threshold or schedule.
 
 ## Evidence
 
