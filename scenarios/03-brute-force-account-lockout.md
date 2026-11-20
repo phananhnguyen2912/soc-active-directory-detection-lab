@@ -54,7 +54,19 @@ Earlier `4624` events are also visible in the search. The `4624` at `10:07:52.35
 
 ![CLIENT01 shows a successful connection after the unlock](../evidence/brute-force-success-after-unlock.png)
 
-- [Account lockout policy](../evidence/brute-force-lockout-policy.png)
-- [Active Directory account state and bad-password count](../evidence/brute-force-ad-lockout-state.png)
-- [Raw lockout event 4740](../evidence/brute-force-splunk-lockout-event.png)
-- [Raw pre-lockout Kerberos logon event 4624](../evidence/brute-force-splunk-pre-lockout-kerberos-logon.png)
+### Account lockout policy
+
+![Account lockout policy](../evidence/brute-force-lockout-policy.png)
+
+### Active Directory account state and bad-password count
+
+![Active Directory account state and bad-password count](../evidence/brute-force-ad-lockout-state.png)
+
+### Raw lockout event 4740
+
+![Raw lockout event 4740](../evidence/brute-force-splunk-lockout-event.png)
+
+### Raw pre-lockout Kerberos logon event 4624
+
+![Raw pre-lockout Kerberos logon event 4624](../evidence/brute-force-splunk-pre-lockout-kerberos-logon.png)
+
