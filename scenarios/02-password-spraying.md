@@ -70,18 +70,16 @@ This query aggregates over the entire selected range.
 | Item | Observed Result |
 |---|---|
 | Test date and time zone | 2026-11-18 - UTC + 7  |
-| Search time range | 2026-11-18 13:43:59.475 - 2026-11-18 13:47:59.765   |
+| First and last observed events in the test sequence (UTC+7) | 13:43:59.475–13:47:59.765 |
 | Source IP | 192.168.56.20 |
 | Failed events | 10 |
 | Distinct target accounts | 10 |
 | Detection threshold | 5 distinct accounts |
 | Detection result | Matched the simulated activity |
 
-  ### Detailed Authentication Failure Timeline
+### Detailed Authentication Failure Timeline
 
-
-But in the 
-[Detailed authentication failure timeline](../evidence/password-spraying-event-details.png), the table shows 12 failed authentication events on November 18, 2026:
+The [detailed authentication failure timeline](../evidence/password-spraying-event-details.png) shows 12 failed authentication events in a wider search window on November 18, 2026.
 
 | Activity | Time shown in Splunk | Target accounts | Events |
 |---|---|---|---|
